@@ -1,3 +1,6 @@
+## React Practice Project
+본 프로젝트는 React 연습을 위한 토이프로젝트입니다.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
