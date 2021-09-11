@@ -32,6 +32,8 @@ class CustomerAdd extends React.Component {
         this.addCutomer()
             .then((res) => {
                 console.log(res);
+                //새로고침, 임시
+                window.location.href='./customers';
             })
     }
 

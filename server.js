@@ -13,6 +13,10 @@ const data = fs.readFileSync('./database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
 
+const multer = require('multer');
+const exp = require('constants');
+const upload = multer({ dest: './upload' })
+
 const connection = mysql.createConnection({
     host: conf.host,
     user: conf.user,
@@ -23,6 +27,8 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+//./image 요청이 들어오면 ./upload에서 가져오겠다라는 뜻
+app.use('./IMAGE', express.static('./upload'));
 
 app.get('/customers', (req, res) => {
     connection.query(
@@ -33,5 +39,22 @@ app.get('/customers', (req, res) => {
         }
     )
 });
+
+app.post('/customer', upload.single('IMAGE'), (req, res) => {
+    let query = 'insert into customer values(null,?,?,?,?,? )';
+    const image = '/IMAGE/' + req.file.filename;
+    const name = req.body.NAME;
+    const gender = req.body.GENDER;
+    const birthday = req.body.BIRTHDAY;
+    const job = req.body.JOB;
+    const param = [image, name, birthday, gender, job];
+
+    connection.query(query, param,
+        (err, rows, fields) => {
+            res.send(rows);
+            console.log(err);
+        })
+
+})
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
