@@ -28,6 +28,7 @@ app.get('/customers', (req, res) => {
     connection.query(
         "select * from customer",
         (err, rows, fields) => {
+            console.log("server data: " + JSON.stringify(rows));
             res.send(rows);
         }
     )
