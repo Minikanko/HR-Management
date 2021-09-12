@@ -31,7 +31,7 @@ const styles = theme => ({
   },
   paper: {
     marginLeft: 15,
-    marginRight: 15
+    marginRight: 15,
   },
   tableHead: {
     fontSize: '1.2rem'
@@ -95,12 +95,20 @@ class App extends Component {
     super(props);
     this.state = {
       customers: '',
+      searchKeyword: ""
     }
+  }
+
+  handleValueChange = (e) => {
+    let nextValue = {};
+    nextValue[e.target.name] = e.target.value;
+    this.setState(nextValue);
   }
 
   refreshState = () => {
     this.setState({
       customers: "",
+      searchKeyword: ""
     });
     this.callApi()
       .then(res => this.setState({ customers: res }))
@@ -126,6 +134,27 @@ class App extends Component {
   // }
 
   render() {
+    const filteredComponents = (data) => {
+      data = data.filter((c) => {
+        return c.NAME.indexOf(this.state.searchKeyword) > -1;
+      });
+
+      return data.map((c) => {
+        return (
+          <Customer
+            key={c.ID}
+            id={c.ID}
+            name={c.NAME}
+            image={c.IMAGE}
+            gender={c.GENDER}
+            birthday={c.BIRTHDAY}
+            job={c.JOB}
+            refreshState={this.refreshState}
+          />
+        )
+      })
+    };
+
     const { classes } = this.props;
 
     return (
@@ -153,6 +182,9 @@ class App extends Component {
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
+                onChange={this.handleValueChange}
+                name="searchKeyword"
+                value={this.state.searchKeyword}
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div>
@@ -162,7 +194,7 @@ class App extends Component {
           <CustomerAdd refreshState={this.refreshState} />
         </div>
         <Paper className={classes.paper}>
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
                 {cellList.map(c => {
@@ -171,21 +203,7 @@ class App extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.customers ? this.state.customers.map(c => {
-                return (
-                  <Customer
-                    key={c.ID}
-                    id={c.ID}
-                    name={c.NAME}
-                    image={c.IMAGE}
-                    gender={c.GENDER}
-                    birthday={c.BIRTHDAY}
-                    job={c.JOB}
-                    refreshState={this.refreshState}
-                  />
-                )
-              }) :
-
+              {this.state.customers ? filteredComponents(this.state.customers):
                 <TableRow>
                   <TableCell colSpan="6" align="center">
                     <Progress />
