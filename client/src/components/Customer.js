@@ -1,5 +1,6 @@
 import React from 'react';
 import {TableRow,TableCell} from '@material-ui/core';
+import CustomerDelete from './CustomerDelete';
 
 class Customer extends React.Component{
     render(){
@@ -9,6 +10,8 @@ class Customer extends React.Component{
                 <TableCell><p>{this.props.name}({this.props.id})</p></TableCell>
                 <TableCell><p>{this.props.gender}</p></TableCell>
                 <TableCell><p>{this.props.birthday}</p></TableCell>
+                <TableCell><p>{this.props.job}</p></TableCell>
+                <CustomerDelete id={this.props.id}  refreshState={this.props.refreshState}/>
             </TableRow>
         );
     }

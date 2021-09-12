@@ -27,12 +27,12 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-//./image 요청이 들어오면 ./upload에서 가져오겠다라는 뜻
-app.use('./IMAGE', express.static('./upload'));
+///image 요청이 들어오면 ./upload에서 가져오겠다라는 뜻
+app.use('/IMAGE', express.static('./upload'));
 
 app.get('/customers', (req, res) => {
     connection.query(
-        "select * from customer",
+        "select * from customer where deleted = 0",
         (err, rows, fields) => {
             console.log("server data: " + JSON.stringify(rows));
             res.send(rows);
@@ -54,7 +54,15 @@ app.post('/customer', upload.single('IMAGE'), (req, res) => {
             res.send(rows);
             console.log(err);
         })
-
 })
+
+app.delete('/customers/:id', (req, res) => {
+    const sql = "update customer set deleted = 1 and deletedDate = now() where id = ?";
+    const param = [req.params.id];
+    connection.query(sql, param, (err, rows, fields) => {
+        res.send(rows);
+    })
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

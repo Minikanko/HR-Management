@@ -1,6 +1,6 @@
 import React from "react";
 import { post } from 'axios';
-import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 
 class CustomerAdd extends React.Component {
 
@@ -14,6 +14,7 @@ class CustomerAdd extends React.Component {
             fileName: '',
         }
     }
+
     handleFileChange = (e) => {
         this.setState({
             file:e.target.files[0],
@@ -31,9 +32,8 @@ class CustomerAdd extends React.Component {
         e.preventDefault()
         this.addCutomer()
             .then((res) => {
-                console.log(res);
-                //새로고침, 임시
-                window.location.href='./customers';
+                console.log('사용자 등록완료: '+res);
+                this.props.refreshState();
             })
     }
 

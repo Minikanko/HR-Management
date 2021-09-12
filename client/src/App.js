@@ -25,10 +25,22 @@ const styles = theme => ({
 })
 
 class App extends Component {
-    state = {
-        customers: "",
-        //completed: 0
-    };
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: '',
+    }
+  }
+
+  refreshState = () => {
+    this.setState({
+      customers:"",
+    });
+    this.callApi()
+            .then(res => this.setState({ customers: res }))
+            .catch(err => console.error(err));
+  }
+
 
     componentDidMount() {
         //this.timer = setInterval(this.progress, 20);
@@ -59,7 +71,9 @@ class App extends Component {
                       <TableCell>이미지</TableCell>
                       <TableCell>이름</TableCell>
                       <TableCell>성별</TableCell>
-                      <TableCell>나이</TableCell>
+                      <TableCell>생년월일</TableCell>
+                      <TableCell>직업</TableCell>
+                      <TableCell>삭제</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -72,6 +86,8 @@ class App extends Component {
                               image = {c.IMAGE}
                               gender = {c.GENDER}
                               birthday = {c.BIRTHDAY}
+                              job = {c.JOB}
+                              refreshState =  {this.refreshState}
                             />
                           )
                     }):
@@ -90,7 +106,7 @@ class App extends Component {
                   </TableBody>
               </Table>
           </Paper>
-          <CustomerAdd/>
+          <CustomerAdd refreshState= {this.refreshState}/>
         </div>
       )
     }
