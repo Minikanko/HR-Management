@@ -41,7 +41,7 @@ app.get('/customers', (req, res) => {
 });
 
 app.post('/customer', upload.single('IMAGE'), (req, res) => {
-    let query = 'insert into customer values(null,?,?,?,?,? )';
+    let query = 'insert into customer(IMAGE,NAME,BIRTHDAY,GENDER,JOB) values(?,?,?,?,?)';
     const image = '/IMAGE/' + req.file.filename;
     const name = req.body.NAME;
     const gender = req.body.GENDER;

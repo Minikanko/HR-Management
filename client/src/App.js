@@ -98,11 +98,6 @@ class App extends Component {
                       </TableCell>
                     </TableRow>
                     }
-                     <TableRow>
-                      <TableCell colSpan="6" align="right">
-                        <a href="/addCustomerView">추가하기</a>
-                      </TableCell>
-                    </TableRow>
                   </TableBody>
               </Table>
           </Paper>
