@@ -1,4 +1,4 @@
-## React Practice Project
+## React and Node.js Practice Project
 본 프로젝트는 React 연습을 위한 토이프로젝트입니다.
 
 # Getting Started with Create React App
